@@ -130,7 +130,7 @@ namespace App::Controllers {
                     result_json[key] = list_items;
                 }
 
-                return crow::response(200, result_json.dump(2));
+                return crow::response(200, AES.Encrypt(result_json.dump(2)));
 
             } catch (const std::exception& e) {
 
@@ -164,11 +164,10 @@ namespace App::Controllers {
                 client.srem(decrypted_user_id, { decrypted_friend_id });
                 client.sync_commit();
 
-                return crow::response(200, "Friend removed successfully");
+                return crow::response(200, AES.Encrypt("Friend removed successfully"));
 
             }
             catch (const std::exception& e) {
-                std::cerr << "Exception: " << e.what() << std::endl;
                 return crow::response(400, "Error: 3"); 
             }
         });
